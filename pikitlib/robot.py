@@ -6,6 +6,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 import robotmap
+import Led
 
 
 class MyRobot():
@@ -24,19 +25,21 @@ class MyRobot():
        # self.myRobot.setExpiration(0.1)
 
         self.DEADZONE = 0.4
+        self.led = Led.Led()
 
         #self.buzz = pikitlib.IllegalBuzzer()
 
         NetworkTables.initialize()
-        self.driver = pikitlib.XboxController(0)
+        #self.driver = pikitlib.XboxController(0)
 
     def autonomousInit(self):
         self.myRobot.tankDrive(0.8, 0.8)
 
     def autonomousPeriodic(self):
-        self.myRobot.tankDrive(1, 0.5)
+        #self.myRobot.tankDrive(1, 0.5)
+        print('Sup, we are in auto')
 
-        buttonAPressed = self.driver.getAButtonPressed()
+        '''buttonAPressed = self.driver.getAButtonPressed()
         if buttonAPressed:
             logging.debug('AButton has been pressed')
         buttonAReleased = self.driver.getAButtonReleased()
@@ -47,8 +50,7 @@ class MyRobot():
             logging.debug('AButton is DOWN on controller 0')
         else:
             logging.debug('AButton is UP on controller 0')
-    
-
+            '''
     def teleopInit(self):
         """
         Configures appropriate robot settings for teleop mode
@@ -62,15 +64,17 @@ class MyRobot():
         return val
 
     def teleopPeriodic(self):
+        print('Nada, we are now in tele.')
+        self.led.rainbowCycle(self.led.strip)
         #forward = -self.driver.getRawAxis(5) 
         #rotation_value = rotation_value = self.driver.getX(LEFT_HAND)
         
         # Test controller
         
-        forward = self.driver.getX(0)
-        forward = 0.80 * self.deadzone(forward, robotmap.DEADZONE)
-        rotation_value = -0.8 * self.driver.getY(1)
-        self.myRobot.arcadeDrive(forward,rotation_value)
+        #forward = self.driver.getX(0)
+       # forward = 0.80 * self.deadzone(forward, robotmap.DEADZONE)
+       # rotation_value = -0.8 * self.driver.getY(1)
+        #self.myRobot.arcadeDrive(forward,rotation_value)
 
 
         """

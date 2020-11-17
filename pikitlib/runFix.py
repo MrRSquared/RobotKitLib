@@ -35,10 +35,7 @@ class main():
 
         self.timer = pikitlib.Timer()
         self.led=Led.Led()
-
-        
-
-        
+                
     def connect(self):
         """
         Connect to robot NetworkTables server
@@ -79,6 +76,11 @@ class main():
     def start(self):    
         self.r.robotInit()
         self.rl = threading.Thread(target=self.robotLoop)
+        self.rl.start()
+        if self.rl.is_alive():
+            print("We created rl")
+        
+
 
     def setupMode(self, m):
         """
@@ -88,18 +90,25 @@ class main():
         
         if m == "Teleop":
             self.r.teleopInit()
+            
         elif m == "Auton":
             self.r.autonomousInit()
+            
 
         self.current_mode = m
+        
        
-        self.rl.start()
+        #self.rl.start() TODO: FIx this too...
 
     def auton(self):
         self.r.autonomousPeriodic()
+        print("auto was Called")
+        
 
     def teleop(self):
         self.r.teleopPeriodic()
+        
+        print("Teleop was called")
         
     def disable(self):
         m1 = pikitlib.SpeedController(0)
@@ -108,15 +117,18 @@ class main():
         m4 = pikitlib.SpeedController(6)
         m = pikitlib.SpeedControllerGroup(m1,m2,m3,m4)
         m.set(0)
+        print("robot disabled")
+        #self.led.colorWipe(self.led.strip, self.led.Color(0,0,0),10)
 
     def mainLoopThread(self):
         """
         Loop the mode function
         """
         while True:
-            if self.disabled:
+            if self.disabled == True:
                 self.disable()
-                self.rl._stop()
+                #self.rl._stop()              
+
                     
             time.sleep(0.02)
 
@@ -126,14 +138,19 @@ class main():
         sys.exit()
             
     def robotLoop(self):
-        
         while True:
-            self.timer.start()
-            '''if self.current_mode == "Auton":
+            if (self.current_mode == "Auton") and (self.disabled == False):
                 self.auton()
-            elif self.current_mode == "Teleop":
+            elif (self.current_mode == "Teleop"):
                 self.teleop()
-            self.timer.stop()'''
+            else:
+                self.rl._stop()
+                pass
+            print ("Rainbow animation")
+            self.led.rainbow(self.led.strip)
+            self.led.rainbowCycle(self.led.strip)
+            print ("finished")  
+            self.timer.stop()
             ts = 0.02 -  self.timer.get()
             self.timer.reset()
             if ts < -0.5:

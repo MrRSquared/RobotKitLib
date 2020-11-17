@@ -99,10 +99,10 @@ NetworkTables.initialize(ip)
 
 
 pygame.init()#Initializes Pygame
-pygame.joystick.init()
+##pygame.joystick.init()
 # Assume only 1 joystick for now
-joystick = pygame.joystick.Joystick(0)
-joystick.init()#Initializes Joystick
+##joystick = pygame.joystick.Joystick(0)
+##joystick.init()#Initializes Joystick
 
 # Initialize Window
 screen = pygame.display.set_mode((500, 600))
@@ -134,7 +134,7 @@ pygame.display.update()
 # save reference to table for each xbox controller
 xbc_nt = NetworkTables.getTable('DriverStation/XboxController0')
 mode_nt = NetworkTables.getTable('RobotMode')
-buttons = [False] * joystick.get_numbuttons()
+##buttons = [False] * joystick.get_numbuttons()
 
 
 
@@ -145,7 +145,7 @@ lg.daemon = True
 lg.start()
 
 
-axis_values = [0] * joystick.get_numaxes()
+##axis_values = [0] * joystick.get_numaxes()
 
 
 
@@ -168,17 +168,17 @@ while loopQuit == False:
          https://robotpy.readthedocs.io/projects/pynetworktables/en/latest/examples.html
     """
 
-    for i in range(len(buttons)):
-        buttons[i] = bool(joystick.get_button(i))
+    ##for i in range(len(buttons)):
+    ##    buttons[i] = bool(joystick.get_button(i))
     #print(axis_values)
     #print(joystick.get_button(0))
-    for j in range(len(axis_values)):
-        axis_values[j] = joystick.get_axis(j)
+    ##for j in range(len(axis_values)):
+    ##    axis_values[j] = joystick.get_axis(j)
     
     #print(axis_values)
 
-    xbc_nt.putBooleanArray("Buttons", buttons)
-    xbc_nt.putNumberArray("Axis", list(axis_values))
+    ##xbc_nt.putBooleanArray("Buttons", buttons)
+    ##xbc_nt.putNumberArray("Axis", list(axis_values))
 
     redrawWindow()
     for event in pygame.event.get():
