@@ -17,6 +17,7 @@ def Color(red, green, blue, white = 0):
         return (white << 24) | (red << 16)|(green << 8)| blue
 
 def run(stop): 
+    
     while True: 
         print ("Rainbow animation")
         led.rainbow(led.strip)
