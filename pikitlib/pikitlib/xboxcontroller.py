@@ -2,7 +2,14 @@ import enum
 from networktables import NetworkTables
 import time
 
-import xboxconfig
+# import xboxconfig
+LEFT_JOY_X = 0
+LEFT_JOY_Y = 1
+RIGHT_JOY_X = 2
+RIGHT_JOY_Y = 3
+
+RIGHT_TRIGGER = 4
+LEFT_TRIGGER = 5
 
 class XboxController():
 
@@ -69,11 +76,11 @@ class XboxController():
         :returns: the x position
         """
         if hand == self.Hand.kLeft:
-            self.axis_values[xboxconfig.LEFT_JOY_X] = self.nt.getNumberArray("Axis", self.buttons)[xboxconfig.LEFT_JOY_X]
-            return self.axis_values[xboxconfig.LEFT_JOY_X]
+            self.axis_values[LEFT_JOY_X] = self.nt.getNumberArray("Axis", self.buttons)[LEFT_JOY_X]
+            return self.axis_values[LEFT_JOY_X]
         else:
-            self.axis_values[xboxconfig.RIGHT_JOY_X] = self.nt.getNumberArray("Axis", self.buttons)[xboxconfig.RIGHT_JOY_X]
-            return self.axis_values[xboxconfig.RIGHT_JOY_X]
+            self.axis_values[RIGHT_JOY_X] = self.nt.getNumberArray("Axis", self.buttons)[RIGHT_JOY_X]
+            return self.axis_values[RIGHT_JOY_X]
 
     def getY(self, hand):
         """Get the y position of the controller.
@@ -83,11 +90,11 @@ class XboxController():
         :returns: the y position
         """
         if hand == self.Hand.kLeft:
-            self.axis_values[xboxconfig.LEFT_JOY_Y] = self.nt.getNumberArray("Axis", self.buttons)[xboxconfig.LEFT_JOY_Y]
-            return self.axis_values[xboxconfig.LEFT_JOY_Y]
+            self.axis_values[LEFT_JOY_Y] = self.nt.getNumberArray("Axis", self.buttons)[LEFT_JOY_Y]
+            return self.axis_values[LEFT_JOY_Y]
         else:
-            self.axis_values[xboxconfig.RIGHT_JOY_X] = self.nt.getNumberArray("Axis", self.buttons)[xboxconfig.RIGHT_JOY_X]
-            return self.axis_values[xboxconfig.RIGHT_JOY_X]
+            self.axis_values[RIGHT_JOY_X] = self.nt.getNumberArray("Axis", self.buttons)[RIGHT_JOY_X]
+            return self.axis_values[RIGHT_JOY_X]
 
     def getBumper(self, hand) -> bool:
         """Read the values of the bumper button on the controller.
