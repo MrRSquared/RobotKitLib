@@ -9,7 +9,6 @@ import threading
 #Robot
 import robot
 import pikitlib
-import Led
 from networktables import NetworkTables
 
 
@@ -34,7 +33,6 @@ class main():
         
 
         self.timer = pikitlib.Timer()
-        self.led=Led.Led()
 
         
 
@@ -84,7 +82,7 @@ class main():
         """
         Run the init function for the current mode
         """
-        #self.rl._stop() TODO: Make this work?
+        self.rl._stop()
         
         if m == "Teleop":
             self.r.teleopInit()
@@ -126,15 +124,14 @@ class main():
         sys.exit()
             
     def robotLoop(self):
-        
         while True:
             self.timer.start()
-            '''if self.current_mode == "Auton":
+            if self.current_mode == "Auton":
                 self.auton()
             elif self.current_mode == "Teleop":
                 self.teleop()
-            self.timer.stop()'''
-            ts = 0.02 -  self.timer.get()
+            self.timer.stop()
+            ts = self.timer.get() - 0.02
             self.timer.reset()
             if ts < -0.5:
                 logging.critical("Program taking too long!")

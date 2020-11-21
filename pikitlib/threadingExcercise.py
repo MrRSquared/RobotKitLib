@@ -1,44 +1,34 @@
-# Python program killing 
-# threads using stop 
-# flag tutorial came from https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/
-  
+# Python program creating 
+# three threads 
+
 import threading 
-import time 
+import time
 
-import Led
+def goodbye(name, adjective):
+    print('Goodbye, %s, it was %s to meet you.' % (name, adjective))
 
-led=Led.Led()
+import atexit
+atexit.register(goodbye, 'Donny', 'nice')
 
-def Color(red, green, blue, white = 0):
-        """COnvert the provided red, green, blue color to a 24 bit color value.
-        Each color component should be a value 0-255 where 0 is the lowest intensity
-        and 255 is the highest intensity.
-        """
-        return (white << 24) | (red << 16)|(green << 8)| blue
+stop_threads = False
+# counts from 1 to 9 
+def func(): 
+	while True:
+		for i in range(1, 10): 
+			time.sleep(0.001) 
+			#print('Thread ' + str(number) + ': prints ' + str(number*i)) 
+			print("hi"+str(i))
+		if stop_threads:
+			print("ending")
+			break
 
-def run(stop): 
-    
-    while True: 
-        print ("Rainbow animation")
-        led.rainbow(led.strip)
-        led.rainbowCycle(led.strip)
-        if stop(): 
-            break
-                  
-def main(): 
-        stop_threads = False
-        t1 = threading.Thread(target = run, args =(lambda : stop_threads, )) 
-        try:
-            t1.start() 
-        except: 
-            print("No thread; sorry")
-        i = 0
-        for i in range (3):
-            print("running main thread")
-            time.sleep(1)
-        stop_threads = True
-        t1.join() 
-        print('thread killed') 
-        print ("Cleaning up...")
-        led.colorWipe(led.strip, Color(0,0,0),10)
-main() 
+# creates 3 threads 
+# for i in range(0,3): 
+thread = threading.Thread(target=func, daemon =True) 
+thread.start() 
+time.sleep(3)
+stop_threads = True
+thread.join() 
+print('thread killed')
+time.sleep(1)
+print("exiting")
