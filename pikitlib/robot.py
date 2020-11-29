@@ -6,8 +6,9 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 import robotmap
-import Led
 
+LEFT_HAND = 1
+RIGHT_HAND = 0
 
 class MyRobot():
     def robotInit(self):
@@ -25,38 +26,24 @@ class MyRobot():
        # self.myRobot.setExpiration(0.1)
 
         self.DEADZONE = 0.4
-        self.led = Led.Led()
 
         #self.buzz = pikitlib.IllegalBuzzer()
 
         NetworkTables.initialize()
-        #self.driver = pikitlib.XboxController(0)
+        self.driver = pikitlib.XboxController(0)
 
     def autonomousInit(self):
         self.myRobot.tankDrive(0.8, 0.8)
 
     def autonomousPeriodic(self):
-        #self.myRobot.tankDrive(1, 0.5)
-        print('Sup, we are in auto')
+        self.myRobot.tankDrive(1, 0.5)
 
-        '''buttonAPressed = self.driver.getAButtonPressed()
-        if buttonAPressed:
-            logging.debug('AButton has been pressed')
-        buttonAReleased = self.driver.getAButtonReleased()
-        if buttonAReleased:
-            logging.debug('AButton has been released')
-        buttonA = self.driver.getAButton() 
-        if buttonA:
-            logging.debug('AButton is DOWN on controller 0')
-        else:
-            logging.debug('AButton is UP on controller 0')
-            '''
     def teleopInit(self):
         """
         Configures appropriate robot settings for teleop mode
         """
-        self.left.setInverted(True)
-        self.right.setInverted(True)
+        self.left.setInverted(False)
+        self.right.setInverted(False)
         
     def deadzone(self, val, deadzone):
         if abs(val) < deadzone:
@@ -64,24 +51,8 @@ class MyRobot():
         return val
 
     def teleopPeriodic(self):
-        print('Nada, we are now in tele.')
-        self.led.rainbowCycle(self.led.strip)
-        #forward = -self.driver.getRawAxis(5) 
-        #rotation_value = rotation_value = self.driver.getX(LEFT_HAND)
         
-        # Test controller
-        
-        #forward = self.driver.getX(0)
-       # forward = 0.80 * self.deadzone(forward, robotmap.DEADZONE)
-       # rotation_value = -0.8 * self.driver.getY(1)
-        #self.myRobot.arcadeDrive(forward,rotation_value)
-
-
-        """
-        forward = 0.7
-        rotation_value = 0.2
-
-
-        forward = self.deadzone(forward, 0.5)
-
-        self.myRobot.arcadeDrive(forward, rotation_value)"""
+        forward = self.driver.getX(LEFT_HAND)
+        forward = 0.80 * self.deadzone(forward, robotmap.DEADZONE)
+        rotation_value = -0.8 * self.driver.getY(RIGHT_HAND)
+        self.myRobot.arcadeDrive(forward,rotation_value)

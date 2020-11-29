@@ -18,6 +18,11 @@ class Led:
         self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
         # Intialize the library (must be called once before other functions).
         self.strip.begin()
+    def Color(self, red, green, blue, white = 0):
+        """Convert the provided red, green, blue color to a 24 bit color value.
+        Each color component should be a value 0-255 where 0 is the lowest intensity
+        and 255 is the highest intensity."""
+        return (white << 24) | (red << 16)|(green << 8)| blue
     def LED_TYPR(self,order,R_G_B):
         B=R_G_B & 255
         G=R_G_B >> 8 & 255
@@ -26,13 +31,23 @@ class Led:
         color = [Color(G,R,B),Color(G,B,R),Color(R,G,B),Color(R,B,G),Color(B,R,G),Color(B,G,R)]
         if order in Led_type:
             return color[Led_type.index(order)]
+    def colorWipeSolid(self,strip, color, wait_ms=50):
+        """Wipe color across display a pixel at a time."""
+        color = self.Color(color[0],color[1], color[2])
+        color=self.LED_TYPR(self.ORDER,color)
+        for i in range(self.strip.numPixels()):
+            self.strip.setPixelColor(i, color)
+            self.strip.show()
+    
     def colorWipe(self,strip, color, wait_ms=50):
         """Wipe color across display a pixel at a time."""
+        #color = Color(color[0],color[1], color[2])
         color=self.LED_TYPR(self.ORDER,color)
         for i in range(self.strip.numPixels()):
             self.strip.setPixelColor(i, color)
             self.strip.show()
             time.sleep(wait_ms/1000.0)
+    
 
     def theaterChase(self,strip, color, wait_ms=50, iterations=10):
         """Movie theater light style chaser animation."""
