@@ -1,3 +1,4 @@
+
 import pygame
 
 pygame.init()
@@ -21,4 +22,4 @@ try:
 
 except KeyboardInterrupt:
     print("EXITING NOW")
-    j.quit()
+    j.quit() 

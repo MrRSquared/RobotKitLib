@@ -6,5 +6,5 @@
         "--extension-pkg-whitelist=lxml",
         "--extension-pkg-whitelist=pygame"
     ],
-    "python.pythonPath": "C:\\Users\\Leko\\AppData\\Local\\Programs\\Python\\Python38\\python.exe"
+    "python.pythonPath": "/home/eli/Robotics/RobotKitLib/RobotKitLib/venv/bin/python3"
 }
