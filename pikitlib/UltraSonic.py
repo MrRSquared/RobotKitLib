@@ -1,6 +1,8 @@
 import os
 import sys
 import time
+import threading
+# TODO: create its own thread because we want this to be an interrupt.
 import RPi.GPIO as GPIO
 class UltraSonic:
     def __init__(self):
@@ -10,6 +12,8 @@ class UltraSonic:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.trigger_pin,GPIO.OUT)
         GPIO.setup(self.echo_pin,GPIO.IN)
+        self.currentDistance = 0
+        self.distance_thread()
     def send_trigger_pulse(self):
         GPIO.output(self.trigger_pin,True)
         time.sleep(0.00015)
@@ -19,8 +23,14 @@ class UltraSonic:
         count = timeout
         while GPIO.input(self.echo_pin) != value and count>0:
             count = count-1
+    
+    def distance_thread(self):
+        thread = threading.Thread(target=self.distanceLoop, daemon =True)
+        thread.start()
+        
+    
      
-    def get_distance(self):
+    def measure_distance(self):
         oldDistance = 0
         distance_cm=[0,0,0,0,0]
         for i in range(3):
@@ -38,9 +48,15 @@ class UltraSonic:
         else:
             oldDistance = distance_cm[2]
         return int(distance_cm[2])
-ultrasonic=UltraSonic()              
+    def distanceLoop(self):
+        while True:
+            self.currentDistance = self.measure_distance()
+    def get_distance(self):
+        return self.currentDistance
+             
 # Main program logic follows:
 if __name__ == '__main__':
+    ultrasonic=UltraSonic() 
     print ('Program is starting ... ')
     while True:
         try:
